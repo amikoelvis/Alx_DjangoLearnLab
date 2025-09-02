@@ -1,7 +1,7 @@
 import os
 import django
 
-# Setup Django environment so we can run queries outside the shell
+# Setup Django environment
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_models.settings")
 django.setup()
 
@@ -29,13 +29,12 @@ def books_in_library(library_name):
 def librarian_for_library(library_name):
     try:
         library = Library.objects.get(name=library_name)
-        return library.librarian  # Thanks to OneToOne relation
+        return Librarian.objects.get(library=library)  # ✅ explicit check
     except (Library.DoesNotExist, Librarian.DoesNotExist):
         return None
 
 
 if __name__ == "__main__":
-    # Example usage
     print("Books by Author J.K. Rowling:")
     for book in books_by_author("J.K. Rowling"):
         print(f"- {book.title}")
