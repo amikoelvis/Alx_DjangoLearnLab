@@ -27,6 +27,64 @@ DEBUG = False
 
 ALLOWED_HOSTS = []
 
+# ---------------------------------------------------------------------
+# HTTPS / Secure Redirects and related security settings
+# ---------------------------------------------------------------------
+
+# IMPORTANT: In production DEBUG must be False
+DEBUG = False
+
+# Set your real host(s) here -- required when DEBUG = False
+ALLOWED_HOSTS = ["yourdomain.com", "www.yourdomain.com", "server-ip-or-hostname"]
+
+# If you're behind a reverse proxy (e.g. nginx) that sets X-Forwarded-Proto,
+# tell Django which header to trust. Example below trusts 'https' when proxy sends it.
+# Only set this if you actually use a proxy that sets this header.
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+# Force all requests to HTTPS by redirecting HTTP -> HTTPS
+SECURE_SSL_REDIRECT = True
+
+# HSTS: instruct browsers to access site only over HTTPS for the given time.
+# Start with a smaller value while testing (e.g. 3600) then increase to 31536000 once stable.
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # include all subdomains in HSTS
+SECURE_HSTS_PRELOAD = True  # opt-in to browser preload list (only after verifying site)
+
+# Cookies: ensure cookies are only sent over HTTPS
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# Browser protections
+SECURE_BROWSER_XSS_FILTER = True  # enables X-XSS-Protection header (where supported)
+SECURE_CONTENT_TYPE_NOSNIFF = True  # sets X-Content-Type-Options: nosniff
+X_FRAME_OPTIONS = "DENY"  # prevents clickjacking (do not use ALLOW from untrusted sources)
+
+# Additional headers you may want to set via middleware or webserver:
+# - Referrer-Policy
+# - Permissions-Policy (formerly Feature-Policy)
+# - Strict-Transport-Security (already handled via SECURE_HSTS_*)
+
+# -- Content Security Policy (CSP) note --
+# Consider using django-csp (pip install django-csp) and add 'csp.middleware.CSPMiddleware'
+# to MIDDLEWARE. Example CSP settings (adjust to match your static / external hosts):
+# CSP_DEFAULT_SRC = ("'self'",)
+# CSP_SCRIPT_SRC = ("'self'", "https://trustedscripts.example.com")
+# CSP_STYLE_SRC = ("'self'", "https://fonts.googleapis.com")
+
+# ---------------------------------------------------------------------
+# Middleware ordering notes:
+# Ensure security-related middleware appears early in MIDDLEWARE.
+# Example:
+# MIDDLEWARE = [
+#     'django.middleware.security.SecurityMiddleware',  # should be first or near top
+#     'django.middleware.csrf.CsrfViewMiddleware',
+#     'django.contrib.sessions.middleware.SessionMiddleware',
+#     # ... other middleware ...
+#     'csp.middleware.CSPMiddleware',  # if using django-csp
+# ]
+# ---------------------------------------------------------------------
+
 # Browser-side protections
 SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = "DENY"  # Prevent clickjacking
