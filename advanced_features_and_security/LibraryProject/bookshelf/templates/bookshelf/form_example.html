@@ -1,13 +1,15 @@
-<form method="post">
-    {% csrf_token %}
-    <label for="title">Book Title:</label>
-    <input type="text" name="title" id="title">
+{% extends "base.html" %}
 
-    <label for="author">Author:</label>
-    <input type="text" name="author" id="author">
+{% block content %}
+  <h2>Example Form</h2>
 
-    <label for="year">Year:</label>
-    <input type="number" name="year" id="year">
+  {% if success %}
+      <p style="color: green;">Form submitted successfully!</p>
+  {% endif %}
 
-    <button type="submit">Save</button>
-</form>
+  <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Submit</button>
+  </form>
+{% endblock %}

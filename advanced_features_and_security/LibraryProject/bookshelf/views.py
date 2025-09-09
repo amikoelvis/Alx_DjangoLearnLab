@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import permission_required
 from .models import Book
-from .forms import BookForm  # Use a ModelForm for safe input handling
+from .forms import BookForm, ExampleForm 
 
 
 # View all books (requires can_view)
@@ -48,4 +48,15 @@ def book_delete(request, pk):
         book.delete()
         return redirect("book_list")
     return render(request, "bookshelf/book_confirm_delete.html", {"book": book})
+
+def example_form_view(request):
+    if request.method == "POST":
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            # Normally you'd process the form data here
+            return render(request, "bookshelf/form_example.html", {"form": form, "success": True})
+    else:
+        form = ExampleForm()
+    return render(request, "bookshelf/form_example.html", {"form": form})
+
  
