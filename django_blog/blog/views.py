@@ -17,6 +17,17 @@ from .forms import CommentForm
 from django.db.models import Q
 from django.shortcuts import render
 from .models import Post
+from django.views.generic import ListView
+from .models import Post
+
+class PostByTagListView(ListView):
+    model = Post
+    template_name = 'blog/post_list.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        tag_slug = self.kwargs.get('tag_slug')
+        return Post.objects.filter(tags__slug=tag_slug).order_by('-published_date')
 
 def search_posts(request):
     query = request.GET.get('q')
