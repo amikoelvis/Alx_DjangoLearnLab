@@ -12,6 +12,28 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 
+# near top
+import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# ... existing settings ...
+
+# Static (you likely already have)
+STATIC_URL = "/static/"
+
+# Media for profile avatars
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+# Authentication redirects
+LOGIN_REDIRECT_URL = "profile"      # where to go after login
+LOGOUT_REDIRECT_URL = "login"       # where to go after logout
+LOGIN_URL = "login"
+
+# Ensure 'django.contrib.messages' is in INSTALLED_APPS and middleware includes MessageMiddleware (default)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
