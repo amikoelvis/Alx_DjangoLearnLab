@@ -6,6 +6,17 @@ from .models import Profile
 from .models import Post
 from django import forms
 from .models import Comment
+from django import forms
+from .models import Post
+from taggit.forms import TagWidget
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'content', 'tags']
+        widgets = {
+            'tags': TagWidget(attrs={'placeholder': 'Add tags separated by commas'}),
+        }
 
 class CommentForm(forms.ModelForm):
     class Meta:
@@ -14,11 +25,6 @@ class CommentForm(forms.ModelForm):
         widgets = {
             "content": forms.Textarea(attrs={"rows": 3, "placeholder": "Add a comment..."}),
         }
-
-class PostForm(forms.ModelForm):
-    class Meta:
-        model = Post
-        fields = ['title', 'content']
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True, help_text="Required. Enter a valid email address.")

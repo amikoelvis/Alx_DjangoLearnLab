@@ -21,6 +21,11 @@
     <div class="content">
         {% block content %}
         <!-- Page-specific content goes here -->
+         <form method="get" action="{% url 'search-posts' %}">
+  <input type="text" name="q" placeholder="Search posts..." value="{{ request.GET.q }}">
+  <button type="submit">Search</button>
+</form>
+
         {% endblock %}
     </div>
 
